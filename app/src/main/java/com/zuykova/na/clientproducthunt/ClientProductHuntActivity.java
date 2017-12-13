@@ -6,11 +6,14 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import java.util.List;
 
 import retrofit2.Call;
@@ -45,17 +48,18 @@ public class ClientProductHuntActivity extends AppCompatActivity {
                 if (response.isSuccessful()) {
                     if (response.body() != null) {
                         mTopicLab = response.body();
-                        if (mTopicLab !=null) {
+                        if (mTopicLab != null) {
                             mTopics = mTopicLab.getTopics();
-                            Toast.makeText(ClientProductHuntActivity.this, "Все ок" +  mTopics.get(0).getName(), Toast.LENGTH_SHORT).show();
+                            Toast.makeText(ClientProductHuntActivity.this, "Все ок" + mTopics.get(0).getName(), Toast.LENGTH_SHORT).show();
                         }
                     }
                 }
             }
+
             @Override
             public void onFailure(Call<TopicLab> call, Throwable t) {
                 //Произошла ошибка
-                Log.i("dfdf", t.toString());
+                Log.i("TAG", t.toString());
             }
         });
     }
@@ -67,8 +71,29 @@ public class ClientProductHuntActivity extends AppCompatActivity {
         mRecyclerView.setAdapter(mAdapter);
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        menu.add(Menu.NONE, 0, Menu.NONE, R.string.Menu_not_loaded);
+        return super.onCreateOptionsMenu(menu);
+    }
 
-    private class ProductHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        if (mTopics != null) {
+            menu.clear();
+            for (int i = 0; i < mTopics.size(); i++) {
+                menu.add(Menu.NONE, mTopics.get(i).getId(), Menu.NONE, mTopics.get(i).getName());
+            }
+        }
+        return super.onPrepareOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        return super.onOptionsItemSelected(item);
+    }
+
+    private class ProductHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         private Product mProduct;
 
         private TextView mTitleTextView;
