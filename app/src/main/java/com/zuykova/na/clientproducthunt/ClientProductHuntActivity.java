@@ -4,19 +4,26 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class ClientProductHuntActivity extends AppCompatActivity {
 
     private RecyclerView mRecyclerView;
     private ProductAdapter mAdapter;
+
+    TopicLab mTopicLab = null;
+    List<Topic> mTopics = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,7 +33,31 @@ public class ClientProductHuntActivity extends AppCompatActivity {
         mRecyclerView = findViewById(R.id.recycler_view);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
 
+        requestTopics();
         updateUI();
+    }
+
+    private void requestTopics() {
+        App.getApi().getTopics().enqueue(new Callback<TopicLab>() {
+            @Override
+            public void onResponse(Call<TopicLab> call, Response<TopicLab> response) {
+                //Данные успешно пришли
+                if (response.isSuccessful()) {
+                    if (response.body() != null) {
+                        mTopicLab = response.body();
+                        if (mTopicLab !=null) {
+                            mTopics = mTopicLab.getTopics();
+                            Toast.makeText(ClientProductHuntActivity.this, "Все ок" +  mTopics.get(0).getName(), Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                }
+            }
+            @Override
+            public void onFailure(Call<TopicLab> call, Throwable t) {
+                //Произошла ошибка
+                Log.i("dfdf", t.toString());
+            }
+        });
     }
 
     private void updateUI() {
