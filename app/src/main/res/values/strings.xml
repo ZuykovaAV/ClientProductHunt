@@ -4,4 +4,6 @@
     <string name="screenshot">Screenshot</string>
     <string name="get_it">Get it</string>
     <string name="Menu_not_loaded">Меню еще не загрузилось</string>
+    <string name="info_title">Info</string>
+    <string name="upvotes">upvotes:</string>
 </resources>

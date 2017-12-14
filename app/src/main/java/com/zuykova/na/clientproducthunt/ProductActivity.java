@@ -36,6 +36,8 @@ public class ProductActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_product);
 
+        getSupportActionBar().setTitle(R.string.info_title);
+
         mTitleTextView = findViewById(R.id.title_text_view);
         mDescTextView = findViewById(R.id.description_text_view);
         mUpvotesTextView = findViewById(R.id.upvotes_text_view);
@@ -52,7 +54,7 @@ public class ProductActivity extends AppCompatActivity {
         if (mPost != null) {
             mTitleTextView.setText(mPost.getTitle());
             mDescTextView.setText(mPost.getDescription());
-            mUpvotesTextView.setText("upvotes: " + String.format("%d", mPost.getUpvotes()));
+            mUpvotesTextView.setText(getString(R.string.upvotes) + String.format("%d", mPost.getUpvotes()));
             Picasso.with(this)
                     .load(mPost.getScreenshotUrl().getScreenshot())
                     .placeholder(android.R.drawable.gallery_thumb)
