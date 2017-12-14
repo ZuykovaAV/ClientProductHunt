@@ -8,7 +8,6 @@ import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.Toast;
 
 import java.util.List;
 
@@ -39,30 +38,7 @@ public class ClientProductHuntActivity extends AppCompatActivity implements Swip
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         requestTopics();
-        requestPosts();
-    }
-
-    private void requestPosts() {
-        App.getApi().getTech().enqueue(new Callback<PostLab>() {
-            @Override
-            public void onResponse(Call<PostLab> call, Response<PostLab> response) {
-                if (response.isSuccessful()) {
-                    if (response.body() != null) {
-                        mPostLab = response.body();
-                        if (mPostLab != null) {
-                            mPosts = mPostLab.getPosts();
-                            updateUI();
-                        }
-                    }
-
-                }
-            }
-
-            @Override
-            public void onFailure(Call<PostLab> call, Throwable t) {
-                Log.i(TAG, t.toString());
-            }
-        });
+        requestPostsForTopics("tech");
     }
 
     private void requestPostsForTopics(String slug) {
