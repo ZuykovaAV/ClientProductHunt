@@ -55,7 +55,6 @@ public class ClientProductHuntActivity extends AppCompatActivity implements Swip
                             updateUI();
                         }
                     }
-
                 }
             }
 

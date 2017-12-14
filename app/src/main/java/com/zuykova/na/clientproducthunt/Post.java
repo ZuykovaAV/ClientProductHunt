@@ -24,6 +24,9 @@ public class Post {
     @SerializedName("votes_count")
     @Expose
     private Integer upvotes;
+    @SerializedName("redirect_url")
+    @Expose
+    private String redirectUrl;
 
     public Integer getId() {
         return id;
@@ -71,5 +74,13 @@ public class Post {
 
     public void setUpvotes(Integer upvotes) {
         this.upvotes = upvotes;
+    }
+
+    public String getRedirectUrl() {
+        return redirectUrl;
+    }
+
+    public void setRedirectUrl(String redirectUrl) {
+        this.redirectUrl = redirectUrl;
     }
 }

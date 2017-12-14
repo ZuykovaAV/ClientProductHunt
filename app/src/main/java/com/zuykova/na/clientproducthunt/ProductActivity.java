@@ -2,6 +2,7 @@ package com.zuykova.na.clientproducthunt;
 
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -45,8 +46,6 @@ public class ProductActivity extends AppCompatActivity {
         requestPostFromId(mId);
 
         updateUI();
-
-
     }
 
     private void updateUI() {
@@ -63,7 +62,9 @@ public class ProductActivity extends AppCompatActivity {
             mGetItButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-
+                    Uri uri = Uri.parse(mPost.getRedirectUrl()).buildUpon().build();
+                    Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+                    startActivity(intent);
                 }
             });
         }
@@ -85,7 +86,6 @@ public class ProductActivity extends AppCompatActivity {
                         mPost = response.body().getPost();
                         updateUI();
                     }
-
                 }
             }
 

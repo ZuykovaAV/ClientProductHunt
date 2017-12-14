@@ -8,7 +8,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.squareup.picasso.Picasso;
 
@@ -41,7 +40,6 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
                 .placeholder(android.R.drawable.gallery_thumb)
                 .error(android.R.drawable.gallery_thumb)
                 .into(holder.mThumbnailImageView);
-
     }
 
     @Override
@@ -53,7 +51,6 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
     }
 
     public class PostViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
-        //private Post mPost;
 
         private TextView mTitleTextView;
         private TextView mDescTextView;
@@ -72,7 +69,6 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
 
         @Override
         public void onClick(View v) {
-            //Toast.makeText(mContext, "erwre", Toast.LENGTH_SHORT).show();
             Intent intent = ProductActivity.newIntent(mContext, mPosts.get(getLayoutPosition()).getId());
             mContext.startActivity(intent);
 

@@ -8,10 +8,6 @@ public class ScreenshotUrl {
     @SerializedName("300px")
     @Expose
     private String screenshot;
-//    @SerializedName("850px")
-//    @Expose
-//    private String _850px;
-
 
     public String getScreenshot() {
         return screenshot;
