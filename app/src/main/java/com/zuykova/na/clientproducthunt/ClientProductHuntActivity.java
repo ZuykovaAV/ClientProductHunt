@@ -120,5 +120,6 @@ public class ClientProductHuntActivity extends AppCompatActivity implements Swip
     @Override
     public void onRefresh() {
         updateUI();
+        mSwipeRefreshLayout.setRefreshing(false);
     }
 }
