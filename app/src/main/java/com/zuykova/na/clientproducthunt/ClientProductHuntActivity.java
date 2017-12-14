@@ -37,6 +37,8 @@ public class ClientProductHuntActivity extends AppCompatActivity implements Swip
         mRecyclerView = findViewById(R.id.recycler_view);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
 
+        setTitleToolBar("Tech");
+
         requestTopics();
         requestPostsForTopics("tech");
     }
@@ -111,7 +113,13 @@ public class ClientProductHuntActivity extends AppCompatActivity implements Swip
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         requestPostsForTopics(mTopics.get(item.getItemId()).getSlug());
+        String title = mTopics.get(item.getItemId()).getName();
+        setTitleToolBar(title);
         return super.onOptionsItemSelected(item);
+    }
+
+    private void setTitleToolBar(String title) {
+        this.getSupportActionBar().setTitle(title);
     }
 
     @Override
