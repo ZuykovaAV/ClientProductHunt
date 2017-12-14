@@ -12,6 +12,10 @@ public class Topic {
     @Expose
     private String name;
 
+    @SerializedName("slug")
+    @Expose
+    private String slug;
+
     public int getId() {
         return id;
     }
@@ -26,5 +30,13 @@ public class Topic {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getSlug() {
+        return slug;
+    }
+
+    public void setSlug(String slug) {
+        this.slug = slug;
     }
 }
