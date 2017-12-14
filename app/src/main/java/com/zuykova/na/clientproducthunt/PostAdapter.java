@@ -1,12 +1,14 @@
 package com.zuykova.na.clientproducthunt;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.squareup.picasso.Picasso;
 
@@ -22,7 +24,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
     }
 
     @Override
-    public PostViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public PostViewHolder onCreateViewHolder(ViewGroup parent, int viewType)  {
         LayoutInflater inflater = LayoutInflater.from(mContext);
         View view = inflater.inflate(R.layout.list_item_product, parent, false);
         return new PostViewHolder(view);
@@ -50,7 +52,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
         return 0;
     }
 
-    public class PostViewHolder extends RecyclerView.ViewHolder {
+    public class PostViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
         //private Post mPost;
 
         private TextView mTitleTextView;
@@ -60,11 +62,20 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
 
         public PostViewHolder(View itemView) {
             super(itemView);
+            itemView.setOnClickListener(this);
 
             mTitleTextView = itemView.findViewById(R.id.title_text_view);
             mDescTextView = itemView.findViewById(R.id.description_text_view);
             mUpvotesTextView = itemView.findViewById(R.id.upvotes_text_view);
             mThumbnailImageView = itemView.findViewById(R.id.thumbnail_image_view);
+        }
+
+        @Override
+        public void onClick(View v) {
+            //Toast.makeText(mContext, "erwre", Toast.LENGTH_SHORT).show();
+            Intent intent = ProductActivity.newIntent(mContext, mPosts.get(getLayoutPosition()).getId());
+            mContext.startActivity(intent);
+
         }
     }
 }
