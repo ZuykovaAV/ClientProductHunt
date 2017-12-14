@@ -52,7 +52,29 @@ public class ClientProductHuntActivity extends AppCompatActivity implements Swip
                         if (mPostLab != null) {
                             mPosts = mPostLab.getPosts();
                             updateUI();
-                            Toast.makeText(ClientProductHuntActivity.this, mPosts.get(0).getTitle(), Toast.LENGTH_SHORT).show();
+                        }
+                    }
+
+                }
+            }
+
+            @Override
+            public void onFailure(Call<PostLab> call, Throwable t) {
+                Log.i(TAG, t.toString());
+            }
+        });
+    }
+
+    private void requestPostsForTopics(String slug) {
+        App.getApi().getPostsForTopic(slug).enqueue(new Callback<PostLab>() {
+            @Override
+            public void onResponse(Call<PostLab> call, Response<PostLab> response) {
+                if (response.isSuccessful()) {
+                    if (response.body() != null) {
+                        mPostLab = response.body();
+                        if (mPostLab != null) {
+                            mPosts = mPostLab.getPosts();
+                            updateUI();
                         }
                     }
 
@@ -76,8 +98,6 @@ public class ClientProductHuntActivity extends AppCompatActivity implements Swip
                         mTopicLab = response.body();
                         if (mTopicLab != null) {
                             mTopics = mTopicLab.getTopics();
-                            Toast.makeText(ClientProductHuntActivity.this, mTopics.get(0).getName(), Toast.LENGTH_SHORT).show();
-
                         }
                     }
                 }
@@ -106,7 +126,7 @@ public class ClientProductHuntActivity extends AppCompatActivity implements Swip
         if (mTopics != null) {
             menu.clear();
             for (int i = 0; i < mTopics.size(); i++) {
-                menu.add(Menu.NONE, mTopics.get(i).getId(), Menu.NONE, mTopics.get(i).getName());
+                menu.add(Menu.NONE, i, Menu.NONE, mTopics.get(i).getName());
             }
         }
         return super.onPrepareOptionsMenu(menu);
@@ -114,6 +134,7 @@ public class ClientProductHuntActivity extends AppCompatActivity implements Swip
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+        requestPostsForTopics(mTopics.get(item.getItemId()).getSlug());
         return super.onOptionsItemSelected(item);
     }
 
