@@ -8,6 +8,8 @@ import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.TextView;
 
 import java.util.List;
 
@@ -20,6 +22,7 @@ public class ClientProductHuntActivity extends AppCompatActivity implements Swip
 
     private SwipeRefreshLayout mSwipeRefreshLayout;
     private RecyclerView mRecyclerView;
+    private TextView mListIsEmptyTextView;
 
     TopicLab mTopicLab = null;
     List<Topic> mTopics = null;
@@ -36,6 +39,8 @@ public class ClientProductHuntActivity extends AppCompatActivity implements Swip
 
         mRecyclerView = findViewById(R.id.recycler_view);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+
+        mListIsEmptyTextView = findViewById(R.id.list_is_empty);
 
         setTitleToolBar("Tech");
 
@@ -90,6 +95,11 @@ public class ClientProductHuntActivity extends AppCompatActivity implements Swip
 
     private void updateUI() {
         mRecyclerView.setAdapter(new PostAdapter(ClientProductHuntActivity.this, mPostLab.getPosts()));
+        if (mPosts.size() == 0) {
+            mListIsEmptyTextView.setVisibility(View.VISIBLE);
+        } else {
+            mListIsEmptyTextView.setVisibility(View.INVISIBLE);
+        }
     }
 
     @Override
@@ -111,6 +121,7 @@ public class ClientProductHuntActivity extends AppCompatActivity implements Swip
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+        mListIsEmptyTextView.setVisibility(View.INVISIBLE);
         requestPostsForTopics(mTopics.get(item.getItemId()).getSlug());
         String title = mTopics.get(item.getItemId()).getName();
         setTitleToolBar(title);
