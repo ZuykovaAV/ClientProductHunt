@@ -10,6 +10,10 @@ public interface ProductHuntApi {
     Call<TopicLab> getTopics();
 
     //Topics
-    @GET("https://api.producthunt.com/v1/categories/{slug}/posts?access_token=591f99547f569b05ba7d8777e2e0824eea16c440292cce1f8dfb3952cc9937ff")
+    @GET("v1/categories/{slug}/posts?access_token=591f99547f569b05ba7d8777e2e0824eea16c440292cce1f8dfb3952cc9937ff")
     Call<PostLab> getPostsForTopic(@Path("slug") String slug);
+
+    //Topics
+    @GET("v1/posts/{id}?access_token=591f99547f569b05ba7d8777e2e0824eea16c440292cce1f8dfb3952cc9937ff")
+    Call<OnePost> getPostFromId(@Path("id") int id);
 }

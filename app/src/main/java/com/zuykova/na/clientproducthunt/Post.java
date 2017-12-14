@@ -15,10 +15,6 @@ public class Post {
     @SerializedName("tagline")
     @Expose
     private String description;
-    @SerializedName("category_id")
-    @Expose
-    private Object categoryId;
-    private String redirectUrl;
     @SerializedName("screenshot_url")
     @Expose
     private ScreenshotUrl screenshotUrl;
@@ -51,22 +47,6 @@ public class Post {
 
     public void setDescription(String description) {
         this.description = description;
-    }
-
-    public Object getCategoryId() {
-        return categoryId;
-    }
-
-    public void setCategoryId(Object categoryId) {
-        this.categoryId = categoryId;
-    }
-
-    public String getRedirectUrl() {
-        return redirectUrl;
-    }
-
-    public void setRedirectUrl(String redirectUrl) {
-        this.redirectUrl = redirectUrl;
     }
 
     public ScreenshotUrl getScreenshotUrl() {
