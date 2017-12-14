@@ -8,6 +8,8 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.squareup.picasso.Picasso;
+
 import java.util.List;
 
 public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder> {
@@ -32,6 +34,11 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
         holder.mTitleTextView.setText(post.getTitle());
         holder.mDescTextView.setText(post.getDescription());
         holder.mUpvotesTextView.setText("upvotes: " + String.format("%d", post.getUpvotes()));
+        Picasso.with(mContext)
+                .load(post.getThumbnail().getThumbnailUrl())
+                .placeholder(android.R.drawable.gallery_thumb)
+                .error(android.R.drawable.gallery_thumb)
+                .into(holder.mThumbnailImageView);
 
     }
 

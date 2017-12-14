@@ -7,13 +7,13 @@ public class Thumbnail {
 
     @SerializedName("image_url")
     @Expose
-    private String thumbnail;
+    private String thumbnailUrl;
 
-    public String getThumbnail() {
-        return thumbnail;
+    public String getThumbnailUrl() {
+        return thumbnailUrl;
     }
 
-    public void setThumbnail(String thumbnail) {
-        this.thumbnail = thumbnail;
+    public void setThumbnailUrl(String thumbnailUrl) {
+        this.thumbnailUrl = thumbnailUrl;
     }
 }
