@@ -1,17 +1,13 @@
 package com.zuykova.na.clientproducthunt;
 
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.List;
@@ -20,24 +16,54 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class ClientProductHuntActivity extends AppCompatActivity {
+public class ClientProductHuntActivity extends AppCompatActivity implements SwipeRefreshLayout.OnRefreshListener {
+    public static final String TAG = "ClientActivity";
 
+    private SwipeRefreshLayout mSwipeRefreshLayout;
     private RecyclerView mRecyclerView;
-    private ProductAdapter mAdapter;
 
     TopicLab mTopicLab = null;
     List<Topic> mTopics = null;
+    PostLab mPostLab = null;
+    List<Post> mPosts = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_client_product_hunt);
 
+        mSwipeRefreshLayout = findViewById(R.id.swipe_container);
+        mSwipeRefreshLayout.setOnRefreshListener(this);
+
         mRecyclerView = findViewById(R.id.recycler_view);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         requestTopics();
-        updateUI();
+        requestPosts();
+    }
+
+    private void requestPosts() {
+        App.getApi().getTech().enqueue(new Callback<PostLab>() {
+            @Override
+            public void onResponse(Call<PostLab> call, Response<PostLab> response) {
+                if (response.isSuccessful()) {
+                    if (response.body() != null) {
+                        mPostLab = response.body();
+                        if (mPostLab != null) {
+                            mPosts = mPostLab.getPosts();
+                            updateUI();
+                            Toast.makeText(ClientProductHuntActivity.this, mPosts.get(0).getTitle(), Toast.LENGTH_SHORT).show();
+                        }
+                    }
+
+                }
+            }
+
+            @Override
+            public void onFailure(Call<PostLab> call, Throwable t) {
+                Log.i(TAG, t.toString());
+            }
+        });
     }
 
     private void requestTopics() {
@@ -50,7 +76,8 @@ public class ClientProductHuntActivity extends AppCompatActivity {
                         mTopicLab = response.body();
                         if (mTopicLab != null) {
                             mTopics = mTopicLab.getTopics();
-                            Toast.makeText(ClientProductHuntActivity.this, "Все ок" + mTopics.get(0).getName(), Toast.LENGTH_SHORT).show();
+                            Toast.makeText(ClientProductHuntActivity.this, mTopics.get(0).getName(), Toast.LENGTH_SHORT).show();
+
                         }
                     }
                 }
@@ -59,16 +86,13 @@ public class ClientProductHuntActivity extends AppCompatActivity {
             @Override
             public void onFailure(Call<TopicLab> call, Throwable t) {
                 //Произошла ошибка
-                Log.i("TAG", t.toString());
+                Log.i(TAG, t.toString());
             }
         });
     }
 
     private void updateUI() {
-        ProductLab productLab = ProductLab.get(this);
-        List<Product> products = productLab.getProducts();
-        mAdapter = new ProductAdapter(products);
-        mRecyclerView.setAdapter(mAdapter);
+        mRecyclerView.setAdapter(new PostAdapter(ClientProductHuntActivity.this, mPostLab.getPosts()));
     }
 
     @Override
@@ -93,60 +117,8 @@ public class ClientProductHuntActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    private class ProductHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-        private Product mProduct;
-
-        private TextView mTitleTextView;
-        private TextView mDescTextView;
-        private TextView mUpvotesTextView;
-        private ImageView mThumbnailImageView;
-
-        public ProductHolder(LayoutInflater inflater, ViewGroup parent) {
-            super(inflater.inflate(R.layout.list_item_product, parent, false));
-            itemView.setOnClickListener(this);
-
-            mTitleTextView = itemView.findViewById(R.id.title_text_view);
-            mDescTextView = itemView.findViewById(R.id.description_text_view);
-            mUpvotesTextView = itemView.findViewById(R.id.upvotes_text_view);
-            mThumbnailImageView = itemView.findViewById(R.id.thumbnail_image_view);
-        }
-
-        public void bind(Product product) {
-            mProduct = product;
-            mTitleTextView.setText(mProduct.getTitle());
-            mDescTextView.setText(mProduct.getDescription());
-            mUpvotesTextView.setText(mProduct.getUpvotes());
-            //TODO:добавить картинку
-        }
-
-        @Override
-        public void onClick(View v) {
-            Toast.makeText(v.getContext(), mProduct.getTitle(), Toast.LENGTH_SHORT).show();
-        }
-    }
-
-    private class ProductAdapter extends RecyclerView.Adapter<ProductHolder> {
-        private List<Product> mProducts;
-
-        public ProductAdapter(List<Product> products) {
-            mProducts = products;
-        }
-
-        @Override
-        public ProductHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-            LayoutInflater layoutInflater = LayoutInflater.from(parent.getContext());
-            return new ProductHolder(layoutInflater, parent);
-        }
-
-        @Override
-        public void onBindViewHolder(ProductHolder holder, int position) {
-            Product product = mProducts.get(position);
-            holder.bind(product);
-        }
-
-        @Override
-        public int getItemCount() {
-            return mProducts.size();
-        }
+    @Override
+    public void onRefresh() {
+        updateUI();
     }
 }
