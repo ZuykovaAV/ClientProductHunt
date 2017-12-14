@@ -20,14 +20,15 @@
         android:layout_marginTop="8dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
+        android:textAppearance="@style/TextAppearance.Header"
         tools:text="Заголовок"/>
 
     <TextView
         android:id="@+id/description_text_view"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
+        android:textAppearance="@style/TextAppearance.Subheader"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/title_text_view"
         tools:text="Описание"/>
@@ -36,7 +37,6 @@
         android:id="@+id/upvotes_text_view"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/description_text_view"
@@ -44,13 +44,14 @@
 
     <ImageView
         android:id="@+id/screenshot_image_view"
-        android:scaleType="centerCrop"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
         android:contentDescription="@string/screenshot"
+        android:scaleType="centerCrop"
         app:layout_constraintBottom_toTopOf="@+id/get_it_button"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
