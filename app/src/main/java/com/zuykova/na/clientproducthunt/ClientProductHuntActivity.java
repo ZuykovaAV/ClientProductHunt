@@ -113,12 +113,14 @@ public class ClientProductHuntActivity extends AppCompatActivity implements Swip
     }
 
     private void updateUI() {
-        mRecyclerView.setAdapter(new PostAdapter(ClientProductHuntActivity.this, mPostLab.getPosts()));
-        mProgressBar.setVisibility(View.INVISIBLE);
-        if (mPosts.size() == 0) {
-            mListIsEmptyTextView.setVisibility(View.VISIBLE);
-        } else {
-            mListIsEmptyTextView.setVisibility(View.INVISIBLE);
+        if (mPostLab != null) {
+            mRecyclerView.setAdapter(new PostAdapter(ClientProductHuntActivity.this, mPostLab.getPosts()));
+            mProgressBar.setVisibility(View.INVISIBLE);
+            if (mPosts.size() == 0) {
+                mListIsEmptyTextView.setVisibility(View.VISIBLE);
+            } else {
+                mListIsEmptyTextView.setVisibility(View.INVISIBLE);
+            }
         }
     }
 
