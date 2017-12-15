@@ -7,4 +7,5 @@
     <string name="info_title">Info</string>
     <string name="upvotes">upvotes:</string>
     <string name="list_is_empty">List of posts is empty</string>
+    <string name="tech_title">Tech</string>
 </resources>

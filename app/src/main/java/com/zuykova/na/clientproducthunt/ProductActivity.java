@@ -9,6 +9,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -25,6 +26,7 @@ public class ProductActivity extends AppCompatActivity {
     private int mId;
     private Post mPost;
 
+    private ProgressBar mProgressBar;
     private TextView mTitleTextView;
     private TextView mDescTextView;
     private TextView mUpvotesTextView;
@@ -37,6 +39,9 @@ public class ProductActivity extends AppCompatActivity {
         setContentView(R.layout.activity_product);
 
         getSupportActionBar().setTitle(R.string.info_title);
+
+        mProgressBar = findViewById(R.id.progress_bar);
+        mProgressBar.setVisibility(View.VISIBLE);
 
         mTitleTextView = findViewById(R.id.title_text_view);
         mDescTextView = findViewById(R.id.description_text_view);
@@ -52,6 +57,7 @@ public class ProductActivity extends AppCompatActivity {
 
     private void updateUI() {
         if (mPost != null) {
+            mProgressBar.setVisibility(View.INVISIBLE);
             mTitleTextView.setText(mPost.getTitle());
             mDescTextView.setText(mPost.getDescription());
             mUpvotesTextView.setText(getString(R.string.upvotes) + String.format("%d", mPost.getUpvotes()));

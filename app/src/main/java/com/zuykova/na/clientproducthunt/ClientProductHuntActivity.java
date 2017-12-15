@@ -9,6 +9,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import java.util.List;
@@ -22,6 +23,7 @@ public class ClientProductHuntActivity extends AppCompatActivity implements Swip
 
     private SwipeRefreshLayout mSwipeRefreshLayout;
     private RecyclerView mRecyclerView;
+    private ProgressBar mProgressBar;
     private TextView mListIsEmptyTextView;
 
     TopicLab mTopicLab = null;
@@ -40,9 +42,12 @@ public class ClientProductHuntActivity extends AppCompatActivity implements Swip
         mRecyclerView = findViewById(R.id.recycler_view);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
 
+        mProgressBar = findViewById(R.id.progress_bar);
+        mProgressBar.setVisibility(View.VISIBLE);
+
         mListIsEmptyTextView = findViewById(R.id.list_is_empty);
 
-        setTitleToolBar("Tech");
+        setTitleToolBar(getString(R.string.tech_title));
 
         requestTopics();
         requestPostsForTopics("tech");
@@ -95,6 +100,7 @@ public class ClientProductHuntActivity extends AppCompatActivity implements Swip
 
     private void updateUI() {
         mRecyclerView.setAdapter(new PostAdapter(ClientProductHuntActivity.this, mPostLab.getPosts()));
+        mProgressBar.setVisibility(View.INVISIBLE);
         if (mPosts.size() == 0) {
             mListIsEmptyTextView.setVisibility(View.VISIBLE);
         } else {
