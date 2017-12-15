@@ -20,6 +20,8 @@ import retrofit2.Response;
 
 public class ClientProductHuntActivity extends AppCompatActivity implements SwipeRefreshLayout.OnRefreshListener {
     public static final String TAG = "ClientActivity";
+    private static final String KEY_TOPIC_SLUG = "key_topic_slug";
+    private static final String KEY_TOPIC_NAME = "key_topic_name";
 
     private SwipeRefreshLayout mSwipeRefreshLayout;
     private RecyclerView mRecyclerView;
@@ -30,6 +32,8 @@ public class ClientProductHuntActivity extends AppCompatActivity implements Swip
     List<Topic> mTopics = null;
     PostLab mPostLab = null;
     List<Post> mPosts = null;
+    private String mCurrentTopicSlug;
+    private String mCurrentTopicName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,10 +51,20 @@ public class ClientProductHuntActivity extends AppCompatActivity implements Swip
 
         mListIsEmptyTextView = findViewById(R.id.list_is_empty);
 
-        setTitleToolBar(getString(R.string.tech_title));
+
 
         requestTopics();
-        requestPostsForTopics("tech");
+        if (savedInstanceState != null) {
+            mCurrentTopicSlug = savedInstanceState.getString(KEY_TOPIC_SLUG, "tech");
+            mCurrentTopicName = savedInstanceState.getString(KEY_TOPIC_NAME, "Tech");
+            setTitleToolBar(mCurrentTopicName);
+            requestPostsForTopics(mCurrentTopicSlug);
+        }
+        else {
+            setTitleToolBar(getString(R.string.tech_title));
+            requestPostsForTopics("tech");
+        }
+
     }
 
     private void requestPostsForTopics(String slug) {
@@ -109,6 +123,13 @@ public class ClientProductHuntActivity extends AppCompatActivity implements Swip
     }
 
     @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putString(KEY_TOPIC_NAME, mCurrentTopicName);
+        outState.putString(KEY_TOPIC_SLUG, mCurrentTopicSlug);
+    }
+
+    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         menu.add(Menu.NONE, 0, Menu.NONE, R.string.Menu_not_loaded);
         return super.onCreateOptionsMenu(menu);
@@ -128,6 +149,8 @@ public class ClientProductHuntActivity extends AppCompatActivity implements Swip
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         mListIsEmptyTextView.setVisibility(View.INVISIBLE);
+        mCurrentTopicSlug = mTopics.get(item.getItemId()).getSlug();
+        mCurrentTopicName = mTopics.get(item.getItemId()).getName();
         requestPostsForTopics(mTopics.get(item.getItemId()).getSlug());
         String title = mTopics.get(item.getItemId()).getName();
         setTitleToolBar(title);
